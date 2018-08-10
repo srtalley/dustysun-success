@@ -1,0 +1,148 @@
+/*
+Theme Name: SUCCESS - Divi Child Theme
+Theme URI: https://dustysun.com/success-theme-buy-now/
+Template: Divi
+Author: Dusty Sun
+Author URI: https://www.dustysun.com
+Version: 0.9
+Description: Awesome business-focused Divi child theme focused on bringing you success!
+Updated: 2018-08-01
+Tags: business-ready, business, corporate, small-business, success, successful, responsive-layout, one-column, two-columns, three-columns, four-columns, left-sidebar, right-sidebar, custom-background, custom-colors, featured-images, full-width-template, post-formats, rtl-language-support, theme-options, threaded-comments, translation-ready
+License: GNU General Public License v2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+/* Footer Social Media Block */
+.social-media-follow-dark.et_pb_social_media_follow li a.icon
+.social-media-follow-light.et_pb_social_media_follow li a.icon { transition: all 0.4s ease-in-out; }
+
+.social-media-follow-dark.et_pb_social_media_follow li a.icon:hover,
+.social-media-follow-light.et_pb_social_media_follow li a.icon::before  { color: #000; }
+
+.social-media-follow-dark.et_pb_social_media_follow li a.icon:hover { background-color: #FFF !important; }
+.social-media-follow-dark.et_pb_social_media_follow li a.icon:hover::before  { color: #000; }
+
+.social-media-follow-light.et_pb_social_media_follow li a.icon:hover { background-color: #000 !important; }
+.social-media-follow-light.et_pb_social_media_follow li a.icon:hover::before  { color: #FFF; }
+
+/* Footer bottom bar */
+#main-footer #footer-bottom .container {
+  width: 92%;
+  max-width: 92%;
+}
+
+/* Link Colors */
+.light-link a { color: #c592ce; }
+
+/* =================================================
+BLOG APPEARANCE
+Smaller picture on left
+================================================= */
+.blog-left-layout.et_pb_posts .et_pb_post {
+  overflow: hidden;
+}
+.blog-left-layout.et_pb_posts .et_pb_post .entry-featured-image-url {
+  display:block;
+  /*float:left;*/
+  position: absolute;
+  height: 100%;
+}
+.blog-left-layout.et_pb_posts .et_pb_post a img {
+  max-width: 360px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  float:none;
+}
+.blog-left-layout.et_pb_posts .et_pb_post p.post-meta {
+  font-size: 0.7em;
+}
+.blog-left-layout.et_pb_posts .et_pb_post h2.entry-title {
+  display: block;
+  float:right;
+  width: calc(100% - 380px);
+  margin-left: 380px;
+  padding-left:0;
+}
+.blog-left-layout.et_pb_posts .et_pb_post .post-content,
+.blog-left-layout.et_pb_posts .et_pb_post p.post-meta {
+  width: calc(100% - 380px);
+  margin-left: 380px;
+  display: block;
+  float:right;
+  padding-left: 5px;
+  line-height: 1.8em;
+}
+.blog-left-layout.et_pb_posts .et_pb_post .post-content p {
+  /*font-size: 0.8em;*/
+}
+.blog-left-layout.et_pb_posts .entry-title {
+  padding: 5px 20px 0;
+}
+.blog-left-layout.et_pb_posts h2.entry-title {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  margin-top: 0;
+}
+
+@media only screen and ( max-width:1200px ) {
+  .blog-left-layout.et_pb_posts .et_pb_post a img {
+    max-width: 230px;
+    max-height: 230px;
+  }
+  .blog-left-layout.et_pb_posts .et_pb_post h2.entry-title,
+  .blog-left-layout.et_pb_posts .et_pb_post .post-content,
+  .blog-left-layout.et_pb_posts .et_pb_post p.post-meta {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+  }
+} /* end media max 1200px */
+
+@media only screen and (min-width:981px) and (max-width: 1080px) {
+  #logo {
+    max-width: 200px;
+  }
+} /* end media min 981px and max 1080px */
+
+@media only screen and (max-width: 980px) {
+  #success-footer div.et_pb_column .et_pb_module {
+    text-align: center;
+  }
+} /* end max-width 980px */
+
+@media only screen and ( max-width:767px ) {
+  .blog-left-layout.et_pb_posts .et_pb_post h2.entry-title,
+  .blog-left-layout.et_pb_posts .et_pb_post .post-content,
+  .blog-left-layout.et_pb_posts .et_pb_post p.post-meta {
+    width:50%;
+    padding-left: 20px;
+  }
+  .blog-left-layout.et_pb_posts .et_pb_post .entry-featured-image-url {
+    width: 50%;
+  }
+  .blog-left-layout.et_pb_posts .et_pb_post a img {
+    width:100%;
+    max-width: 100%;
+  }
+} /* end media max 767px */
+
+@media only screen and ( max-width:525px ) {
+  .blog-left-layout.et_pb_posts .et_pb_post h2.entry-title,
+  .blog-left-layout.et_pb_posts .et_pb_post .post-content,
+  .blog-left-layout.et_pb_posts .et_pb_post p.post-meta {
+    margin-left: 0;
+    padding-left: 0;
+    float:none;
+    width:100%;
+  }
+  .blog-left-layout.et_pb_posts .et_pb_post .entry-featured-image-url {
+    float:none;
+    width:100%;
+    position: relative;
+  }
+
+  .blog-left-layout.et_pb_posts .entry-title {
+    padding-top: 10px;
+  }
+}/* end media max 525px */
