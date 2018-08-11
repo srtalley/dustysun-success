@@ -101,29 +101,24 @@ require_once('includes/theme_customizer.php');
 ////////////////////////////////////////////////////
 // THEME UPDATER
 ////////////////////////////////////////////////////
-use \DustySun\WP_License_Agent\Updater\v1_3 as WPLA;
+use \DustySun\WP_License_Agent\Updater\v1_4 as WPLA;
 //Add update checker
-require_once( dirname( __FILE__ ) . '/lib/wp-license-agent-client/updater.php');
+require_once( dirname( __FILE__ ) . '/lib/wp-license-agent-client/wp-license-agent.php');
 function ds_wpla_build_update_checker() {
-    error_log('act');
     //get the current settings 
     // $this->ds_wpla_get_current_settings();
 
-    $email_address = 'srtalley@gmail.com';
-    $license_key = 'test789';
     $settings = array(
       'update_url' => 'https://maximus.client.dustysun.com',
       'update_slug' => 'dustysun-success',
       'main_file' => __FILE__,
-      'license' => $license_key,
-      'email' => $email_address,
       'news_widget' => true,
       'puc_errors' => true
     );
    
     $update_checker = new WPLA\Licensing_Agent($settings);
 } // end function ds_wpla_build_update_checker
-add_action('init', 'ds_wpla_build_update_checker');
+add_action('after_setup_theme', 'ds_wpla_build_update_checker');
 // // plugin update checker from https://github.com/YahnisElsts/plugin-update-checker
 // require( dirname( __FILE__ ) . '/lib/plugin-update-checker/plugin-update-checker.php');
 // $ds_success_theme_slug = 'dustysun-success';
