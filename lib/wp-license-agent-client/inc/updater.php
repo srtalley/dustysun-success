@@ -88,7 +88,7 @@ class Licensing_Agent {
       // retrieve updated license info
       $this->retrieve_license_info();
 
-      unset($_SESSION[$this->update_slug . '_run_wpla_license_check']);
+      unset($_SESSION[$this->update_settings['update_slug'] . '_run_wpla_license_check']);
     } // end if isset
   } // end function run_conditional_license_update_check
 
@@ -154,7 +154,7 @@ class Licensing_Agent {
 
   public function build_wpla_update_checker() {
 
-    // $this->wl('This message shows because you have WP License Agent debug turned on - Update URL: ' . $this->update_settings['updateserver_url']);
+    WPLA_Client_Factory::wl('This message shows because you have WP License Agent debug turned on - Update URL: ' . $this->update_settings['updateserver_url']);
 
     $myUpdateChecker = \Puc_v4p4_Factory::buildUpdateChecker(
       $this->update_settings['updateserver_url'],

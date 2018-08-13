@@ -41,7 +41,7 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\License_Panel')) {
         if(!isset($_SESSION)) {
             session_start();
         } //end if(!isset($_SESSION))
-        // WPLA_Client_Factory::wl($_SESSION);
+
         $nonce_action = basename(__FILE__);
         $nonce_key = $this->update_slug . '_wpnonce';
 
