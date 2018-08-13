@@ -2,7 +2,7 @@
 /*
  * WP License Agent Update Checker Plugin & Theme Update Library
  *
- * Version 1.4.4
+ * Version 1.5
  *
  * https://dustysun.com
  *
@@ -44,15 +44,14 @@
 
     echo WPLA\License_Panel::show_license_panel('your-update-slug');
  */
-namespace DustySun\WP_License_Agent\Updater\v1_4;
+namespace DustySun\WP_License_Agent\Updater\v1_5;
 
 // Load Required libraries
+require_once( dirname( __FILE__ ) . '/inc/check.php');
+require_once( dirname( __FILE__ ) . '/inc/panel.php');
+require_once( dirname( __FILE__ ) . '/inc/updater.php');
 
-require_once( dirname( __FILE__ ) . '/classes/updater.php');
-
-require_once( dirname( __FILE__ ) . '/classes/panel.php');
-
-if(!class_exists('DustySun\WP_License_Agent\Updater\v1_4\WPLA_Client_Factory')) { 
+if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\WPLA_Client_Factory')) { 
     class WPLA_Client_Factory {
 
           /**

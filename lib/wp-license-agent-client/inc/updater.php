@@ -2,7 +2,7 @@
 /*
  * WP License Agent Update Checker Plugin & Theme Updater
  *
- * Version 1.4.4
+ * Version 1.5
  *
  * https://dustysun.com
  *
@@ -16,7 +16,7 @@
  * define( 'WP_LICENSE_AGENT_TEST_URL' , 'https://your_alternate_url');
  */
 
-namespace DustySun\WP_License_Agent\Updater\v1_4;
+namespace DustySun\WP_License_Agent\Updater\v1_5;
 
 require( dirname( __FILE__ ) . '/plugin-update-checker/plugin-update-checker.php');
 
@@ -26,12 +26,16 @@ class Licensing_Agent {
   private $update_settings;
   private $update_url;
   private $checklicense_url;
+  private $license_panel;
 
   public function __construct($settings = null) {
     // set up the update settings
     $this->set_update_settings($settings);
     // create the update checker
     $this->build_wpla_update_checker();
+
+    // generate the lightbox
+    $this->license_panel = new License_Panel($this->update_settings);
 
     if($this->update_settings['puc_errors']) {
       add_action( 'admin_notices', array($this, 'show_puc_admin_error') );
@@ -98,6 +102,7 @@ class Licensing_Agent {
     } else if(!isset($settings['main_file']) || $settings['main_file'] == '') {
       wp_die('You must pass a valid main_file to the name of the main plugin php file or a file in the theme in the settings array when setting up the WP License Agent update checker. Please check the documentation. Usually you can just pass __FILE__ to the function.');
     }
+
     // store the settings in the class variable
     $this->update_settings = array(
       'update_url' => $settings['update_url'],
@@ -109,6 +114,21 @@ class Licensing_Agent {
       'puc_errors' => isset($settings['puc_errors']) && is_bool($settings['puc_errors']) ? $settings['puc_errors'] : true,
       'license_errors' => isset($settings['license_errors']) && is_bool($settings['license_errors']) ? $settings['license_errors'] : true,
     );
+
+    // see if development versions are selected
+    if(isset($this->update_settings['development']) && !empty($this->update_settings['development']) && is_bool($this->update_settings['development'])) {
+      $development_versions = $this->update_settings['development'];
+    } else if (defined('WP_LICENSE_AGENT_DEVELOPMENT_VERSIONS') ) {
+      $development_versions = WP_LICENSE_AGENT_DEVELOPMENT_VERSIONS;
+    } else {
+      $development_versions = false;
+    } // end if
+
+    // construct the checklicense and license info URLs
+
+    $this->update_settings['checklicense_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/checklicense/?update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url();
+
+    $this->update_settings['updateserver_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
 
     // check if a development flag is set
     if(defined('WP_LICENSE_AGENT_TEST_URL') && WP_LICENSE_AGENT_TEST_URL !=
@@ -131,24 +151,17 @@ class Licensing_Agent {
   } // end function  update_checker_info_result
 
   public function build_wpla_update_checker() {
-    // see if development versions are selected
-    if(isset($this->update_settings['development']) && !empty($this->update_settings['development']) && is_bool($this->update_settings['development'])) {
-      $development_versions = $this->update_settings['development'];
-    } else if (defined('WP_LICENSE_AGENT_DEVELOPMENT_VERSIONS') ) {
-      $development_versions = WP_LICENSE_AGENT_DEVELOPMENT_VERSIONS;
-    } else {
-      $development_versions = false;
-    } // end if
+
 
     // build the update URL
-    $deprecated_update_url = $this->update_settings['update_url'] . '/wp-license-agent/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
+    // $deprecated_update_url = $this->update_settings['update_url'] . '/wp-license-agent/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
 
-    $this->update_url = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
+    // $this->update_url = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
 
-    // $this->wl('This message shows because you have WP License Agent debug turned on - Update URL: ' . $this->update_url);
+    // $this->wl('This message shows because you have WP License Agent debug turned on - Update URL: ' . $this->update_settings['updateserver_url']);
 
     $myUpdateChecker = \Puc_v4p4_Factory::buildUpdateChecker(
-      $this->update_url,
+      $this->update_settings['updateserver_url'],
       $this->update_settings['main_file'],
       $this->update_settings['update_slug']
     );
@@ -157,9 +170,6 @@ class Licensing_Agent {
 
   public function register_update_checker_scripts() {
     wp_enqueue_script( 'wpla-updater-1-4', WPLA_Client_Factory::get_updater_url( '/classes/js/updater.js'), '', false, true );
-    // classes for the license panel popup 
-    wp_enqueue_script( 'wpla-generate-license-1-4', WPLA_Client_Factory::get_updater_url( '/classes/includes/generate-license.js' ), '', false, true );
-    wp_enqueue_style('wpla-generate-license-1-4', WPLA_Client_Factory::get_updater_url('/classes/includes/generate-license.css'));
   } // end register_update_checker_scripts
 
   // Clear the puc error message for this plugin or theme
@@ -220,8 +230,8 @@ class Licensing_Agent {
 
   public function retrieve_product_license_info() {
 
-    $this->checklicense_url = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/checklicense/?update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url();
-    $request = wp_remote_get( $this->checklicense_url );
+    // $this->checklicense_url = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/checklicense/?update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url();
+    $request = wp_remote_get( $this->update_settings['checklicense_url']  );
 
     if( is_wp_error( $request )) {
       return false;
@@ -260,8 +270,9 @@ class Licensing_Agent {
 			}
       echo '</div>';
       
-      // generate the lightbox
-      echo License_Panel::show_license_lightbox($this->update_settings['update_slug'], $this->get_product_name() . ': License Information');
+      $license_panel_lightbox = $this->license_panel->show_license_lightbox( $this->get_product_name() . ': License Information');
+
+      echo $license_panel_lightbox;
 
 		} // end if( isset($license_info->valid ) && !$license_info->valid )
   } // end function show_license_error_banner
@@ -279,12 +290,21 @@ class Licensing_Agent {
   } // end function get_product_name 
 
   // Admin notice
-	public function show_general_admin_notices() {
+	public function show_general_admin_notices($var) {
 
 		if( get_transient( $this->update_settings['update_slug'] . '_license_changed_to_valid' ) ) {
 			echo '<div class="notice notice-success"><p>' . __( 'Thanks for updating your license for ' . $this->get_product_name() . '.' , 'ds_wpla' ) . '</p></div>';
 			delete_transient( $this->update_settings['update_slug'] . '_license_changed_to_valid' );
-		}
+    } // end if 
+    
+    // if it's a theme 
+    if(get_current_screen()->base == 'themes') {
+      
+      $show_license_panel = $this->license_panel->show_license_panel();
+      
+      echo '<div class="notice"><h1>' . __( $this->get_product_name() . ' License Info' , 'ds_wpla' ) .'</h1>' . __('<p>Enter your license key or check the status of your key in the form below.</p>', 'ds_wpla') . $show_license_panel . '<p></p></div>';
+    } // end if 
+
   } //end function show_general_admin_notices
   
   public function set_license_changed_to_valid_transient_ajax_handler() {
@@ -303,9 +323,9 @@ class Licensing_Agent {
   public function retrieve_product_license_info_ajax_handler() {
     if(isset($_POST['get_license_info']) && $_POST['get_license_info'] == true) {
       $json_output = array(
-        'license_data' => $this->retrieve_product_license_info(),
-        'update_url' => $this->update_url,
-        'checklicense_url' => $this->checklicense_url
+        'license_data' => License_Check::retrieve_license_info($this->update_settings),
+        'updateserver_url' => $this->update_settings['updateserver_url'],
+        'checklicense_url' => $this->update_settings['checklicense_url']
       );
       wp_send_json($json_output);
   		wp_die();
@@ -319,7 +339,9 @@ class Licensing_Agent {
   
   public function wpla_plugins_show_license_lightbox() {
     // generate the lightbox
-    echo License_Panel::show_license_lightbox($this->update_settings['update_slug'], $this->get_product_name() . ': License Information');
+    $license_panel_lightbox = $this->license_panel->show_license_lightbox( $this->get_product_name() . ': License Information');
+
+    echo $license_panel_lightbox ;
   } // end function wpla_plugins_show_license_lightbox
   
 
