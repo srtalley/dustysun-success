@@ -33,9 +33,10 @@ class Licensing_Agent {
     $this->set_update_settings($settings);
     // create the update checker
     $this->build_wpla_update_checker();
-
+    // see if the current license info should be retrieved
+    $this->run_conditional_license_update_check();
     // generate the lightbox
-    $this->license_panel = new License_Panel($this->update_settings);
+    $this->license_panel = new License_Panel($this->update_settings['update_slug']);
 
     if($this->update_settings['puc_errors']) {
       add_action( 'admin_notices', array($this, 'show_puc_admin_error') );
@@ -78,17 +79,18 @@ class Licensing_Agent {
 
   } //end function __construct
 
-  protected function wl ( $log )  {
-    if(defined('WP_LICENSE_AGENT_DEBUG')) {
-      if ( true === WP_LICENSE_AGENT_DEBUG ) {
-        if ( is_array( $log ) || is_object( $log ) ) {
-          error_log( print_r( $log, true ) );
-        } else {
-          error_log( $log );
-        }
-      }
-    }
-  } // end function wl
+  public function run_conditional_license_update_check() {
+    if(!isset($_SESSION)) {
+      session_start();
+    } //end if(!isset($_SESSION))
+
+    if(isset($_SESSION[$this->update_settings['update_slug'] . '_run_wpla_license_check']) && $_SESSION[$this->update_settings['update_slug'] . '_run_wpla_license_check'] ) {
+      // retrieve updated license info
+      $this->retrieve_license_info();
+
+      unset($_SESSION[$this->update_slug . '_run_wpla_license_check']);
+    } // end if isset
+  } // end function run_conditional_license_update_check
 
   public function set_update_settings ($settings) {
 
@@ -135,7 +137,7 @@ class Licensing_Agent {
     '') {
       $this->update_settings['update_url'] = WP_LICENSE_AGENT_TEST_URL;
     } // end if
-
+    
   } // end function set_update_settings
 
   public function update_checker_info_result($request) {
@@ -152,12 +154,6 @@ class Licensing_Agent {
 
   public function build_wpla_update_checker() {
 
-
-    // build the update URL
-    // $deprecated_update_url = $this->update_settings['update_url'] . '/wp-license-agent/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
-
-    // $this->update_url = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
-
     // $this->wl('This message shows because you have WP License Agent debug turned on - Update URL: ' . $this->update_settings['updateserver_url']);
 
     $myUpdateChecker = \Puc_v4p4_Factory::buildUpdateChecker(
@@ -167,6 +163,29 @@ class Licensing_Agent {
     );
   } // end function build_wpla_update_checker
   
+  public function retrieve_license_info() {
+      
+    $request = wp_remote_get( $this->update_settings['checklicense_url'] );
+
+    if( is_wp_error( $request )) {
+      return false;
+    }
+    $body = wp_remote_retrieve_body($request);
+
+    $data = json_decode($body);
+
+    if(isset($data)) {
+      update_option($this->update_settings['update_slug'] . '_daily_license_check', $data);
+    }
+    if(isset($data->valid)) {
+      update_option($this->update_settings['update_slug'] . '_license_validity', $data->valid);
+    } 
+    if(!isset($data->message)) {
+      $data->message = 'Error: Unable to retrieve license info.';
+    }
+    return($data);
+
+  } // end function retrieve_license_info
 
   public function register_update_checker_scripts() {
     wp_enqueue_script( 'wpla-updater-1-4', WPLA_Client_Factory::get_updater_url( '/classes/js/updater.js'), '', false, true );
@@ -323,7 +342,7 @@ class Licensing_Agent {
   public function retrieve_product_license_info_ajax_handler() {
     if(isset($_POST['get_license_info']) && $_POST['get_license_info'] == true) {
       $json_output = array(
-        'license_data' => License_Check::retrieve_license_info($this->update_settings),
+        'license_data' => $this->retrieve_license_info(),
         'updateserver_url' => $this->update_settings['updateserver_url'],
         'checklicense_url' => $this->update_settings['checklicense_url']
       );

@@ -19,14 +19,15 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\License_Panel')) {
     private $update_slug;
     private $refresh_on_valid;
 
-    public function __construct($update_settings = '', $refresh_on_valid = true) {
+    public function __construct($update_slug = '', $refresh_on_valid = true) {
 
-        if($update_settings == '') {
+        if($update_slug == '') {
+            // see if the session vars are set
+
             wp_die('You must call License_Panel class with the array of update settings.');
         }
 
-        $this->update_settings = $update_settings;
-        $this->update_slug = $update_settings['update_slug'];
+        $this->update_slug = $update_slug;
         $this->refresh_on_valid = $refresh_on_valid;
 
         $this->get_post_data();
@@ -34,19 +35,13 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\License_Panel')) {
         add_action( 'admin_enqueue_scripts', array( $this, 'register_generate_license_scripts' ));
     } // end function __construct 
 
+
     public function get_post_data(){
 
         if(!isset($_SESSION)) {
             session_start();
         } //end if(!isset($_SESSION))
-
-        if(isset($_SESSION[$this->update_slug . '_run_wpla_license_check']) && $_SESSION[$this->update_slug . '_run_wpla_license_check']) {
-            // retrieve updated license info
-            License_Check::retrieve_license_info($this->update_settings);
-
-            unset($_SESSION[$this->update_slug . '_run_wpla_license_check']);
-        } // end if isset
-
+        // WPLA_Client_Factory::wl($_SESSION);
         $nonce_action = basename(__FILE__);
         $nonce_key = $this->update_slug . '_wpnonce';
 

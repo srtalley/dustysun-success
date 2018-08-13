@@ -47,7 +47,6 @@
 namespace DustySun\WP_License_Agent\Updater\v1_5;
 
 // Load Required libraries
-require_once( dirname( __FILE__ ) . '/inc/check.php');
 require_once( dirname( __FILE__ ) . '/inc/panel.php');
 require_once( dirname( __FILE__ ) . '/inc/updater.php');
 
@@ -124,6 +123,17 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\WPLA_Client_Factory')) 
         return str_replace('\\', '/', $string);
     } // end function forward_slashes
 
+    static function wl ( $log )  {
+        if(defined('WP_LICENSE_AGENT_DEBUG')) {
+          if ( true === WP_LICENSE_AGENT_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+              error_log( print_r( $log, true ) );
+            } else {
+              error_log( $log );
+            }
+          }
+        }
+    } // end function wl
 
 
 }
