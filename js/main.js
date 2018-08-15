@@ -7,7 +7,7 @@ jQuery(function($) {
         if(blog_left_layout.length > 0){
           // assign HTMLCollection with parents of images with objectFit to variable
           blog_left_layout.each(function() {
-            // $(this).css('height', 'auto');
+            $(this).css('height', 'auto');
           });
         } //end if(blog_left_layout.length)
       } //end if('objectFit' in document.documentElement.style === false)

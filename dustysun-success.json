@@ -1,0 +1,28 @@
+{ "main_settings":{
+    "name":"Dusty Sun - Success",
+    "text_domain":"ds_success",
+    "tabs":"true",
+    "options_suffix":"_options",
+    "page_suffix":"_page",
+    "author":"Dusty Sun",
+    "author_uri":"https://dustysun.com",
+    "item_uri":"https://dustysun.com/urgency-coupons-for-mailing-lists/",
+    "support_uri":"https://dustysun.com/wordpress-plugin-theme-support/",
+    "support_email":"support@dustysun.com",
+    "page_slug":"dustysun-success",
+    "item_slug":"dustysun-success",
+    "page_hook":"toplevel_page_dustysun-success",
+    "version":"1.5",
+    "wpla_update_url":"https://dustysun.com"
+  },
+  "about_sections":{
+    "ds_success_license":{
+      "title":"Enter your license key and email below",
+      "tab_label":"License"
+    },
+    "ds_success_about":{
+      "title":"About This Theme",
+      "tab_label":"About"
+    }
+  }
+}

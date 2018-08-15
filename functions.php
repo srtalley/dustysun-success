@@ -2,6 +2,11 @@
 // Exit if accessed directly
 if ( !defined('ABSPATH')) exit;
 
+//Include the admin panel page
+require_once( dirname( __FILE__ ) . '/admin.php');
+//Include the admin panel page
+require_once( dirname( __FILE__ ) . '/lib/dustysun-wp-settings-api/ds_wp_settings_api.php');
+
 /* Add custom functions below */
 
 add_action( 'wp_enqueue_scripts', 'dst_enqueue_scripts' );
@@ -105,8 +110,6 @@ use \DustySun\WP_License_Agent\Updater\v1_5 as WPLA;
 //Add update checker
 require_once( dirname( __FILE__ ) . '/lib/wp-license-agent-client/wp-license-agent.php');
 function ds_wpla_build_update_checker() {
-    //get the current settings 
-    // $this->ds_wpla_get_current_settings();
 
     $settings = array(
       'update_url' => 'https://maximus.client.dustysun.com',
@@ -119,11 +122,8 @@ function ds_wpla_build_update_checker() {
     $update_checker = new WPLA\Licensing_Agent($settings);
 } // end function ds_wpla_build_update_checker
 add_action('after_setup_theme', 'ds_wpla_build_update_checker');
-// // plugin update checker from https://github.com/YahnisElsts/plugin-update-checker
-// require( dirname( __FILE__ ) . '/lib/plugin-update-checker/plugin-update-checker.php');
-// $ds_success_theme_slug = 'dustysun-success';
-// $dsSuccessUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-//   'https://dustysun.com/support/wp-update-server/?action=get_metadata&slug=' . $ds_success_theme_slug,
-//   __FILE__,
-//   $ds_success_theme_slug
-// );
+
+
+if(is_admin()) {
+    $ds_success_admin_page = new DustySun_Success_Admin();
+}

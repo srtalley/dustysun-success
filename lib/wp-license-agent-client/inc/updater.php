@@ -20,7 +20,7 @@ namespace DustySun\WP_License_Agent\Updater\v1_5;
 
 require( dirname( __FILE__ ) . '/plugin-update-checker/plugin-update-checker.php');
 
-if(!class_exists('DustySun\WP_License_Agent\Updater\v1_4\Licensing_Agent')) {
+if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\Licensing_Agent')) {
 class Licensing_Agent {
 
   private $update_settings;
@@ -65,7 +65,7 @@ class Licensing_Agent {
    }
 
     //allow the REST license check to be done via AJAX
-    add_action('wp_ajax_retrieve_license_info-' . $this->update_settings['update_slug'] , array($this, 'retrieve_product_license_info_ajax_handler'));
+    add_action('wp_ajax_retrieve_license_info-' . $this->update_settings['update_slug'], array($this, 'retrieve_product_license_info_ajax_handler'));
 
     if(isset($this->update_settings['news_widget']) && $this->update_settings['news_widget']) {   
       // Register the new dashboard widget with the 'wp_dashboard_setup' action
@@ -179,16 +179,17 @@ class Licensing_Agent {
     }
     if(isset($data->valid)) {
       update_option($this->update_settings['update_slug'] . '_license_validity', $data->valid);
-    } 
-    if(!isset($data->message)) {
+    }
+    if( (isset($data->code) && $data->code == 'rest_no_route') || !isset($data->message)) {
       $data->message = 'Error: Unable to retrieve license info.';
     }
+
     return($data);
 
   } // end function retrieve_license_info
 
   public function register_update_checker_scripts() {
-    wp_enqueue_script( 'wpla-updater-1-4', WPLA_Client_Factory::get_updater_url( '/classes/js/updater.js'), '', false, true );
+    wp_enqueue_script( 'wpla-updater-1_5', WPLA_Client_Factory::get_updater_url( '/classes/js/updater.js'), '', false, true );
   } // end register_update_checker_scripts
 
   // Clear the puc error message for this plugin or theme

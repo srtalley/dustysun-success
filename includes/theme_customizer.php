@@ -3,7 +3,7 @@
 * Contains methods for customizing the theme customization screen.
 *
 * @link http://codex.wordpress.org/Theme_Customization_API
-* @since SUCCESS Child Theme 1.0
+* @since SUCCESS Child Theme 1.5
 */
 class DustySunTheme_Customize {
   /**
@@ -422,11 +422,16 @@ class DustySunTheme_Customize {
           padding-top: <?php echo esc_html( round ( $menu_height / 2 ) ); ?>px;
           transition: padding 0.4s ease-in-out;
         }
-
+        #et-top-navigation .et-cart-info {
+          padding-top: <?php echo esc_html( round ( $menu_height / 2 ) ); ?>px;
+          transition: padding 0.4s ease-in-out;
+        }
         .et-fixed-header #top-menu-nav #top-menu > li {
           padding-top: <?php echo esc_html( round ( $fixed_menu_height / 2 ) ); ?>px;
         }
-
+        .et-fixed-header #et-top-navigation .et-cart-info {
+          padding-top: <?php echo esc_html( round ( $fixed_menu_height / 2 ) ); ?>px;
+        }
         #top-menu>li, #top-menu>li:last-child { padding-left: 11px; padding-right: 11px; }
         #top-menu>li:first-of-type { padding-left: 0; }
 

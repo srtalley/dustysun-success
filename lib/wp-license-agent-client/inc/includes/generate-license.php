@@ -1,11 +1,11 @@
 <?php 
-// v1.4.4
+// v1.5
 ?>
 <div class="wpla-license-values-updated <?php echo $updated_message_class; ?> ">
     <h4>Updated values saved</h4>
 </div>
 <div class="wpla-check-license-panel">
-    <form action="" id="<?php echo $this->update_slug; ?>_wpla-license-entry" class="wpla-license-entry" data-update-slug="<?php echo $this->update_slug; ?>" method="POST">
+    <form action="" id="<?php echo $this->update_slug; ?>_wpla-license-entry" class="wpla-license-entry 1_5" data-update-slug="<?php echo $this->update_slug; ?>" data-wpla-version="1_5" method="POST">
         
         <?php wp_nonce_field( $nonce_action, $nonce_key ); ?>
         <input type="hidden" name="<?php echo $this->update_slug; ?>_wpla_license_form" value="true">
@@ -32,7 +32,7 @@
                         <strong>Expiration:</strong> <?php echo $license_expiration; ?>
                 </p>
             </div>
-        <div><button class="wpla-check-license" name="get_news" value=true>Check License</button></div>
+        <div><button class="wpla-check-license" name="<?php echo $this->update_slug; ?>_wpla_get_license" value=true>Check License</button></div>
         </div>
     </form>
 </div>

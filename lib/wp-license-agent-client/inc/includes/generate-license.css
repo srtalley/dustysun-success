@@ -29,8 +29,8 @@ button.wpla-check-license {
     font-weight: bold;
     border: 2px solid #fff;
     margin-right: 1px;
+    cursor: pointer;
 }
-
 button.wpla-check-license:focus {
     outline: -webkit-focus-ring-color none;
     outline-color: -webkit-focus-ring-color;
@@ -54,6 +54,14 @@ button.wpla-check-license:focus {
 }
 .wpla-check-license-response-wrapper.valid button.wpla-check-license {
     color: #005019;
+}
+button.wpla-check-license:disabled,
+button.wpla-check-license:disabled:hover {
+    opacity: 0;
+    cursor: default;
+    /* background-color: rgba(0, 0, 0, 0) !important;
+    color: rgba(0, 0, 0, 0) !important; */
+    /* border: rgba(0, 0, 0, 0) !important; */
 }
 .wpla-check-license-response-wrapper .dashicons {
     width: 24px;

@@ -12,7 +12,7 @@
  */
 namespace DustySun\WP_License_Agent\Updater\v1_5;
 
-if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\License_Panel')) { 
+if(!class_exists('DustySun\WP_License_Agent\Updater\1_5\License_Panel')) { 
     class License_Panel {
     
     private $update_settings;
@@ -155,8 +155,8 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\License_Panel')) {
     } // end static function show_license_lightbox
     
     public function register_generate_license_scripts() {
-        wp_enqueue_script( 'wpla-generate-license-1-4', WPLA_Client_Factory::get_updater_url( '/inc/includes/generate-license.js' ), '', false, true );
-        wp_enqueue_style('wpla-generate-license-1-4', WPLA_Client_Factory::get_updater_url('/inc/includes/generate-license.css'));
+        wp_enqueue_script( 'wpla-generate-license-1_5', WPLA_Client_Factory::get_updater_url( '/inc/includes/generate-license.js' ), '', false, true );
+        wp_enqueue_style('wpla-generate-license-1_5', WPLA_Client_Factory::get_updater_url('/inc/includes/generate-license.css'));
     } // end function register_generate_license_scripts
     
 }} // end class

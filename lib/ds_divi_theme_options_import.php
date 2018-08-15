@@ -1,6 +1,8 @@
 <?php
-
-class DS_Divi_Import {
+/* Imports Divi options
+*  v1.1
+*/
+if(!class_exists('DS_Divi_Import')) { class DS_Divi_Import {
   public function __construct($file) {
     $this->import_divi_theme_options($file);
   } //end construct
@@ -35,15 +37,4 @@ class DS_Divi_Import {
 
   } //end public function import_divi_theme_options
 
-
-  public function wl ( $log )  {
-    if ( true === WP_DEBUG ) {
-        if ( is_array( $log ) || is_object( $log ) ) {
-            error_log( print_r( $log, true ) );
-        } else {
-            error_log( $log );
-        }
-      }
-  } // end write_log
-
-}//END CLASS
+}}//END CLASS
