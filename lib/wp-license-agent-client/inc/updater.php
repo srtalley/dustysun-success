@@ -2,7 +2,7 @@
 /*
  * WP License Agent Update Checker Plugin & Theme Updater
  *
- * Version 1.5
+ * Version 1.5.3
  *
  * https://dustysun.com
  *
@@ -13,14 +13,15 @@
  * 
  * Define these in wp-config.php for debugging or to set a different URL for updates
  * define( 'WP_LICENSE_AGENT_DEBUG', true );
+ * defune( 'WP_LICENSE_AGENT_DEVELOPMENT_VERSIONS', true );
  * define( 'WP_LICENSE_AGENT_TEST_URL' , 'https://your_alternate_url');
  */
 
-namespace DustySun\WP_License_Agent\Updater\v1_5;
+namespace DustySun\WP_License_Agent\Client\v1_5;
 
 require( dirname( __FILE__ ) . '/plugin-update-checker/plugin-update-checker.php');
 
-if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\Licensing_Agent')) {
+if(!class_exists('DustySun\WP_License_Agent\Client\v1_5\Licensing_Agent')) {
 class Licensing_Agent {
 
   private $update_settings;
@@ -65,7 +66,7 @@ class Licensing_Agent {
    }
 
     //allow the REST license check to be done via AJAX
-    add_action('wp_ajax_retrieve_license_info-' . $this->update_settings['update_slug'], array($this, 'retrieve_product_license_info_ajax_handler'));
+    add_action('wp_ajax_retrieve_license_info-' . $this->update_settings['update_slug'] , array($this, 'retrieve_product_license_info_ajax_handler'));
 
     if(isset($this->update_settings['news_widget']) && $this->update_settings['news_widget']) {   
       // Register the new dashboard widget with the 'wp_dashboard_setup' action
@@ -126,18 +127,18 @@ class Licensing_Agent {
       $development_versions = false;
     } // end if
 
-    // construct the checklicense and license info URLs
-
-    $this->update_settings['checklicense_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/checklicense/?update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url();
-
-    $this->update_settings['updateserver_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
-
     // check if a development flag is set
     if(defined('WP_LICENSE_AGENT_TEST_URL') && WP_LICENSE_AGENT_TEST_URL !=
     '') {
       $this->update_settings['update_url'] = WP_LICENSE_AGENT_TEST_URL;
     } // end if
     
+    // construct the checklicense and license info URLs
+
+    $this->update_settings['checklicense_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/checklicense/?update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url();
+
+    $this->update_settings['updateserver_url'] = $this->update_settings['update_url'] . '/wp-json/wp-license-agent/v1/updateserver/?update_action=get_metadata&update_slug=' . $this->update_settings['update_slug'] . '&license=' . $this->update_settings['license'] . '&email=' . $this->update_settings['email'] . '&url=' . site_url() . '&development=' . $development_versions;
+
   } // end function set_update_settings
 
   public function update_checker_info_result($request) {

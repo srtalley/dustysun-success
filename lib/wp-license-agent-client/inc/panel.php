@@ -2,7 +2,7 @@
 /*
  * WP License Agent License Entry
  *
- * Version 1.5
+ * Version 1.5.3
  *
  * https://dustysun.com
  *
@@ -10,9 +10,9 @@
  * Released under the GPLv2 license.
  * 
  */
-namespace DustySun\WP_License_Agent\Updater\v1_5;
+namespace DustySun\WP_License_Agent\Client\v1_5;
 
-if(!class_exists('DustySun\WP_License_Agent\Updater\1_5\License_Panel')) { 
+if(!class_exists('DustySun\WP_License_Agent\Client\v1_5\License_Panel')) { 
     class License_Panel {
     
     private $update_settings;

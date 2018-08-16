@@ -2,7 +2,7 @@
 /*
  * WP License Agent Update Checker Plugin & Theme Update Library
  *
- * Version 1.5
+ * Version 1.5.3
  *
  * https://dustysun.com
  *
@@ -29,7 +29,7 @@
 
     finally, instantiate this object from your plugin:
 
-    use \DustySun\WP_License_Agent\Updater\v1_5 as WPLA;
+    use \DustySun\WP_License_Agent\Client\v1_5 as WPLA;
     $wpla_update_checker = new WPLA\Licensing_Agent($wpla_settings);
 
     ----------
@@ -40,24 +40,24 @@
     function. This should be the same update slug you used when creating
     the Licensing_Agent class as shown above.
 
-    use \DustySun\WP_License_Agent\Updater\v1_5 as WPLA;
+    use \DustySun\WP_License_Agent\Client\v1_5 as WPLA;
 
     echo WPLA\License_Panel::show_license_panel('your-update-slug');
  */
-namespace DustySun\WP_License_Agent\Updater\v1_5;
+namespace DustySun\WP_License_Agent\Client\v1_5;
 
 // Load Required libraries
 require_once( dirname( __FILE__ ) . '/inc/panel.php');
 require_once( dirname( __FILE__ ) . '/inc/updater.php');
 
-if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\WPLA_Client_Factory')) { 
+if(!class_exists('DustySun\WP_License_Agent\Client\v1_5\WPLA_Client_Factory')) { 
     class WPLA_Client_Factory {
 
-    /**
-     * @param string $filePath
-     * @return string
-     * Adapted from plugin-update-checker
-     */
+          /**
+   * @param string $filePath
+   * @return string
+   * Adapted from plugin-update-checker
+   */
     static function get_updater_url($filePath) {
         
         $absolutePath = realpath(dirname(__FILE__) . '/' . ltrim($filePath, '/'));
@@ -69,17 +69,17 @@ if(!class_exists('DustySun\WP_License_Agent\Updater\v1_5\WPLA_Client_Factory')) 
         $themeDir = wp_normalize_path(get_theme_root());
 
         if ( (strpos($absolutePath, $pluginDir) === 0) || (strpos($absolutePath, $muPluginDir) === 0) ) {
-            //It's part of a plugin.
-            return plugins_url(basename($absolutePath), $absolutePath);
+        //It's part of a plugin.
+        return plugins_url(basename($absolutePath), $absolutePath);
         } else if ( strpos($absolutePath, $themeDir) === 0 ) {
-            //It's part of a theme.
-            $relativePath = substr($absolutePath, strlen($themeDir) + 1);
-            $template = substr($relativePath, 0, strpos($relativePath, '/'));
-            $baseUrl = get_theme_root_uri($template);
+        //It's part of a theme.
+        $relativePath = substr($absolutePath, strlen($themeDir) + 1);
+        $template = substr($relativePath, 0, strpos($relativePath, '/'));
+        $baseUrl = get_theme_root_uri($template);
 
-            if ( !empty($baseUrl) && $relativePath ) {
-                return $baseUrl . '/' . $relativePath;
-            }
+        if ( !empty($baseUrl) && $relativePath ) {
+            return $baseUrl . '/' . $relativePath;
+        }
         } 
         return '';
     } // end function get_updater_url

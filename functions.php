@@ -106,7 +106,7 @@ require_once('includes/theme_customizer.php');
 ////////////////////////////////////////////////////
 // THEME UPDATER
 ////////////////////////////////////////////////////
-use \DustySun\WP_License_Agent\Updater\v1_5 as WPLA;
+use \DustySun\WP_License_Agent\Client\v1_5 as WPLA;
 //Add update checker
 require_once( dirname( __FILE__ ) . '/lib/wp-license-agent-client/wp-license-agent.php');
 function ds_wpla_build_update_checker() {
