@@ -4,17 +4,16 @@ if ( !defined('ABSPATH')) exit;
 
 //Include the admin panel page
 require_once( dirname( __FILE__ ) . '/admin.php');
-//Include the admin panel page
+//Include the Dusty Sun settings api
 require_once( dirname( __FILE__ ) . '/lib/dustysun-wp-settings-api/ds_wp_settings_api.php');
 
-/* Add custom functions below */
+/* Add the child theme JS and CSS */
 
 add_action( 'wp_enqueue_scripts', 'dst_enqueue_scripts' );
 function dst_enqueue_scripts() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
   wp_enqueue_script( 'ds-main', get_stylesheet_directory_uri() . '/js/main.js', '', '', true );
 }
-
 
 ////////////////////////////////////////////////////
 // CHILD THEME INSTALLATION OPTIONS
@@ -24,7 +23,6 @@ function dst_enqueue_scripts() {
 require_once get_stylesheet_directory() . '/auto-install/class-tgm-plugin-activation.php';
 require_once get_stylesheet_directory() . '/lib/ds_divi_theme_options_import.php';
 add_action( 'tgmpa_register', 'success_divi_ds_register_required_plugins' );
-
 
 // Register the required plugins for this theme
 function success_divi_ds_register_required_plugins() {
@@ -48,12 +46,11 @@ function success_divi_ds_register_required_plugins() {
         'message'      => '',                      // Message to output right before the plugins table.
     );
     tgmpa($plugins, $config);
-}
-
+} // end function success_divi_ds_register_required_plugins
 
 // Import all the files
 function ocdi_import_files() {
-  $update_url = 'https://www.dustysun.com/support/updates/themes/success/auto-install/';
+  $update_url = 'https://dustysun.com/support/updates/themes/success/auto-install/';
     return array(
         array(
             'import_file_name' => 'SUCCESS Child Theme Import',
@@ -64,7 +61,7 @@ function ocdi_import_files() {
             'import_notice' => __( 'Please waiting for a few minutes, do not close the window or refresh the page until the data is imported.', 'your_theme_name' ),
         ),
     );
-}
+} // end function ocdi_import_files
 add_filter('pt-ocdi/import_files', 'ocdi_import_files');
 
 // Reset the standard WordPress widgets
@@ -73,11 +70,11 @@ function ocdi_before_widgets_import($selected_import) {
         update_option('sidebars_widgets', array());
         update_option('acme_cleared_widgets', true);
     }
-}
+} // end function ocdi_before_widgets_import
 add_action('pt-ocdi/before_widgets_import', 'ocdi_before_widgets_import');
 
 function ocdi_after_import_setup() {
-  $main_menu = get_term_by( 'name', 'Primary', 'nav_menu' );
+    $main_menu = get_term_by( 'name', 'Primary', 'nav_menu' );
     // $secondary_menu = get_term_by( 'name', 'Secondary Menu', 'nav_menu' );
     set_theme_mod( 'nav_menu_locations', array(
       'primary-menu' => $main_menu->term_id,
@@ -91,8 +88,7 @@ function ocdi_after_import_setup() {
 
     //run our Divi theme options import
     $imported_divi_options = new DS_Divi_Import('https://www.dustysun.com/support/updates/themes/success/auto-install/divi-success.json');
-
-}
+} // end function ocdi_after_import_setup
 add_action( 'pt-ocdi/after_import', 'ocdi_after_import_setup' );
 
 // Disable plugin branding
@@ -112,7 +108,7 @@ require_once( dirname( __FILE__ ) . '/lib/wp-license-agent-client/wp-license-age
 function ds_wpla_build_update_checker() {
 
     $settings = array(
-      'update_url' => 'https://maximus.client.dustysun.com',
+      'update_url' => 'https://dustysun.com',
       'update_slug' => 'dustysun-success',
       'main_file' => __FILE__,
       'news_widget' => true,

@@ -1,6 +1,6 @@
 <?php
 /* Imports Divi options
-*  v1.1
+*  v1.2
 */
 if(!class_exists('DS_Divi_Import')) { class DS_Divi_Import {
   public function __construct($file) {
@@ -25,8 +25,6 @@ if(!class_exists('DS_Divi_Import')) { class DS_Divi_Import {
       //update logo and favicon paths
       preg_match('~/wp-content/(.*)~', $theme_options_import['divi_logo'], $matches);
       $theme_options_import['divi_logo'] = get_site_url() . $matches[0];
-      preg_match('~/wp-content/(.*)~', $theme_options_import['divi_favicon'], $matches);
-      $theme_options_import['divi_favicon'] = get_site_url() . $matches[0];
 
       //merge the imported options with the existing ones
       $theme_options_merged = array_merge($theme_options_current, $theme_options_import);

@@ -10,6 +10,10 @@ Use the auto installation folder to complete the installation on your site. Note
 Just activate the theme and then customize the text and images to fit your site.
 
 ## History
+### v1.5 2018-09-11
+* Compatibility fixes.
+* New license updater.
+
 ### v1.0 2018-01-29 
 * Initial Release
 

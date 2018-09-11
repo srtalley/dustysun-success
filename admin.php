@@ -38,18 +38,13 @@ class DustySun_Success_Admin {
                 __('Dusty Sun SUCCESS', 'ds_success'),
                 'manage_options',
                 'dustysun-success',
-                array($this, 'ds_success_menu_callback'), 'dashicons-tickets-alt');
+                array($this, 'ds_success_menu_callback'), 'dashicons-admin-generic');
 
                 // add_submenu_page('urgency-coupons-mailing-lists', 'Configure Settings', 'Configure Settings', 'manage_options', 'urgency-coupons-mailing-lists');
     } //end public function ds_success_admin_menu()
-    //Begin the admin menu
     
-
-
+    //Begin the admin menu
     public function ds_success_menu_callback() {
-        // //ADD THE HEADER
-        // $ds_success_settings_title = $this->ds_success_main_settings['name'].'poop';
-
         // Create the main page HTML
         $this->ds_success_settings_page->build_settings_panel();
     } //end public function ds_success_menu_options()

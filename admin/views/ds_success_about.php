@@ -6,7 +6,7 @@ $ds_author = $this->main_settings['author'];
 $ds_author_uri = $this->main_settings['author_uri'];
 $ds_name = $this->main_settings['name'];
 $ds_item_uri = $this->main_settings['item_uri'];
-
+$ds_support_uri = $this->main_settings['support_uri'];
 ?>
 
 <div style="text-align:center;" class="ds-wp-settings-api-admin-flexcenter">
@@ -14,4 +14,5 @@ $ds_item_uri = $this->main_settings['item_uri'];
   <p>Version: <?php echo $ds_version; ?></p>
   <p>Author: <a href="<?php echo $ds_author_uri; ?>" target="_blank"><?php echo $ds_author; ?></a></p>
   <p>Theme Homepage: <a href="<?php echo $ds_item_uri; ?>" target="_blank"><?php echo $ds_item_uri; ?></a></p>
+  <p>Need Help? <a href="<?php echo $ds_support_uri; ?>" target="_blank"><?php echo $ds_support_uri; ?></a></p>
 </div>

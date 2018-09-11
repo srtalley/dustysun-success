@@ -39,8 +39,9 @@
         <h4>How to Use</h4>
         <p>
           <ol>
-            <li>Run the importer if you haven't already.</li>
-            <li>Change any of the built in layouts or check out the SUCCESS options under the Theme Customizer.</li>
+            <li>Make sure you've already installed the required <a href="/wp-admin/themes.php?page=tgmpa-install-plugins&plugin_status=install">One Click Demo Import</a> plugin.</li>
+            <li>Once that's installed, <a href="/wp-admin/themes.php?page=pt-one-click-demo-import">run the importer</a> if you haven't already.</li>
+            <li>Change any of the built in layouts or check out the SUCCESS options under the <a href="/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Ddustysun-cafechill">Theme Customizer</a>.</li>
           </ol>
         </p>
       </div>
@@ -78,14 +79,14 @@
 
   <div class="ds-wp-settings-vertical-align">
     <!-- Your share button code -->
-    <div class="fb-share-button" data-href="https://dustysun.com/success/" data-layout="button" data-size="large"></div>
+    <div class="fb-share-button" data-href="https://dustysun.com/success-theme/" data-layout="button" data-size="large"></div>
 
     <a class="twitter-share-button"
-      href="https://twitter.com/intent/tweet?text=Check%20Out%20SUCCESS&url=https://dustysun.com/success/"
+      href="https://twitter.com/intent/tweet?text=Check%20Out%20SUCCESS&url=https://dustysun.com/success-theme/"
       data-size="large"></a>
 
     <!-- Place this tag where you want the share button to render. -->
-    <div class="g-plus" data-action="share" data-height="24" data-href="https://dustysun.com/success/"></div>
+    <div class="g-plus" data-action="share" data-height="24" data-href="https://dustysun.com/success-theme/"></div>
   </div>
   </div>
 </div> <!-- ds-wp-settings-flex-columns -->
